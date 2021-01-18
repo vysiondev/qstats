@@ -1,0 +1,28 @@
+package bot_constants
+
+const (
+	QuaverEndpoint = "https://api.quavergame.com/v1"
+	OkEmoji        = "<:OK:737217547551637544>"
+	WsEmoji        = "<:WS:737217547526602792>"
+	PingEmoji      = "<:Heart:737217547480465518>"
+	ErrorEmoji     = "<:StandardErr:737217547195121736>"
+	ReadErrEmoji   = "<:ReadErr:737217547472076820>"
+	FatalErrEmoji  = "<:FatalErr:737217547044388916>"
+	CooldownEmoji  = "<:Cooldown:737227143515209759>"
+	OnlineEmoji    = "<:Online:731418984397668367>"
+	OfflineEmoji   = "<:Offline:731418984364376146>"
+	GradeFEmoji    = "<:gradeF:710007777417887824>"
+	GradeDEmoji    = "<:gradeD:710007758442856509>"
+	GradeCEmoji    = "<:gradeC:710007758337867786>"
+	GradeBEmoji    = "<:gradeB:710007758316896256>"
+	GradeAEmoji    = "<:gradeA:710007758140997632>"
+	GradeSEmoji    = "<:gradeS:710007758627536938>"
+	GradeSSEmoji   = "<:gradeSS:710007759319334912>"
+	GradeXEmoji    = "<:gradeX:710007759281717248>"
+	FullCombo      = "<:fc:710415573795864608> Full Combo"
+	RsNotSubmitted = "<:notsubmitted:710049379846848542> Not submitted"
+	RsUnranked     = "<:unranked:710049379939254332> Unranked"
+	RsRanked       = "<:ranked:710049379565830157> **Ranked**"
+	RsDan          = "<:dan:710049379829940224> Dan"
+	ReplayEmoji    = "<:QDL:732402515861045348>"
+)

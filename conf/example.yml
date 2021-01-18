@@ -1,0 +1,48 @@
+# If you want to use Prometheus to monitor bot guilds, and resource usage.
+metrics: false
+
+# What port the HTTP server should listen on
+prometheus:
+  port:
+
+cassandra:
+  keyspace:
+  # A list of IP addresses
+  hosts:
+    - list
+    - of
+    - your
+    - ips
+  authentication:
+    username:
+    password:
+
+# These are not required
+links:
+  website:
+  github:
+  support:
+
+bot:
+  # Discord bot's token
+  token:
+  # Your user ID from Discord
+  ownerid:
+  # How many shards (if you dont know what this is leave it alone)
+  shards: 1
+  # Time in milliseconds between all QStats actions (commands, previews, etc)
+  cooldown: 4000
+  # Prefix to use
+  prefix: q;
+
+# A webhook URL to send shard connectivity updates to
+webhook:
+  url:
+
+# self explanatory
+redis:
+  uri:
+  password:
+  # This is the default database
+  # (you might want to change it to 1 or something else if you have other projects using Redis)
+  db: 0
