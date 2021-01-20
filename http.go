@@ -39,7 +39,7 @@ func MakeHTTPRequest(url string, thisType string) ([]byte, error) {
 	return responseData, nil
 }
 
-func GetUserSpecificOnlineStatus(userID int) (string, error) {
+func (b *BaseHandler) GetUserSpecificOnlineStatus(userID int) (string, error) {
 	bytes, reqErr := MakeHTTPRequest(bot_constants.QuaverEndpoint+"/server/users/online/"+strconv.Itoa(userID), "endpoint")
 	if reqErr != nil {
 		return "", reqErr
@@ -51,7 +51,7 @@ func GetUserSpecificOnlineStatus(userID int) (string, error) {
 	}
 
 	if !on.IsOnline {
-		return bot_constants.OfflineEmoji + " Offline", nil
+		return b.Config.Emoji.Offline + " Offline", nil
 	} else {
 		var returnStr string
 
@@ -69,10 +69,10 @@ func GetUserSpecificOnlineStatus(userID int) (string, error) {
 			returnStr = "Paused"
 			break
 		case 4:
-			returnStr = fmt.Sprintf("Spectating [%s](https://quavergame.com/user/%s)", on.CurrentStatus.Content, on.CurrentStatus.Content)
+			returnStr = fmt.Sprintf("Spectating [%s](%s/user/%s)", on.CurrentStatus.Content, bot_constants.QuaverMainSite, on.CurrentStatus.Content)
 			break
 		case 5:
-			returnStr = "Editing " + on.CurrentStatus.Content
+			returnStr = "Editing " + utils.RemoveFormattingCharacters(on.CurrentStatus.Content)
 			break
 		case 6:
 			returnStr = "In a multiplayer lobby"
@@ -87,7 +87,7 @@ func GetUserSpecificOnlineStatus(userID int) (string, error) {
 			returnStr = "Unknown status"
 		}
 
-		return bot_constants.OnlineEmoji + " " + returnStr, nil
+		return b.Config.Emoji.Online + " " + returnStr, nil
 	}
 }
 

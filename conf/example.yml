@@ -17,10 +17,13 @@ cassandra:
     username:
     password:
 
-# These are not required
+# These are not required.
+# Links to sites related to QStats. If they aren't set, then it will direct to
+# the developer's sites instead.
 links:
   website:
   github:
+  # This should be a Discord server, irc channel, etc.
   support:
 
 bot:
@@ -46,3 +49,45 @@ redis:
   # This is the default database
   # (you might want to change it to 1 or something else if you have other projects using Redis)
   db: 0
+
+# Emoji to use with the bot.
+# Below are all values you should set. You can either make your own or leave them blank so they wont appear at all.
+emoji:
+  # Shows when something succeeded.
+  success:
+  # Shows in the ping command. (ws and ping)
+  ws:
+  ping:
+  error:
+    # Shows when the bot encounters a normal error (like invalid user input).
+    normal:
+    # Shows when the bot cannot read in JSON from the Quaver api.
+    read:
+    # Shows when the bot gave up on a command.
+    fatal:
+  # Shows when the user is on cooldown.
+  cooldown:
+  # Offline status for a quaver user.
+  offline:
+  # Online status for a quaver user.
+  online:
+  # Grades that show in scores. (if you omit this it might be hard to tell how good a user did!)
+  grade:
+    f:
+    d:
+    c:
+    b:
+    a:
+    s:
+    ss:
+    x:
+  # Shows when this score is a full combo.
+  fullcombo:
+  # The ranked status of maps. Shows alongside most map/set information.
+  rankedstatus:
+    notsubmitted:
+    unranked:
+    ranked:
+    dan:
+  # An icon to download something, like a replay.
+  download:

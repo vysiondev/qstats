@@ -8,6 +8,45 @@ type Configuration struct {
 	Webhook    WebhookConfig
 	Redis      RedisConfig
 	Metrics    bool
+	Emoji      EmojiConfig
+}
+
+type EmojiConfig struct {
+	Success      string
+	Ws           string
+	Ping         string
+	Error        EmojiErrorConfig
+	Cooldown     string
+	Offline      string
+	Online       string
+	Grade        EmojiGradeConfig
+	FullCombo    string
+	RankedStatus EmojiRankedStatusConfig
+	Download     string
+}
+
+type EmojiRankedStatusConfig struct {
+	NotSubmitted string
+	Unranked     string
+	Ranked       string
+	Dan          string
+}
+
+type EmojiGradeConfig struct {
+	F  string
+	D  string
+	C  string
+	B  string
+	A  string
+	S  string
+	SS string
+	X  string
+}
+
+type EmojiErrorConfig struct {
+	Normal string
+	Read   string
+	Fatal  string
 }
 
 type PrometheusConfig struct {

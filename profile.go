@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"github.com/vysiondev/qstats-go/bot_constants"
 	"github.com/vysiondev/qstats-go/quaverapi_structs"
 	"github.com/vysiondev/qstats-go/utils"
 	"strings"
@@ -37,7 +38,7 @@ func (b *BaseHandler) ExecuteProfileCommand(_ context.Context, s *discordgo.Sess
 	} else {
 		keymodeData = &data.User.Keys4
 	}
-	userOnlineStatus, err := GetUserSpecificOnlineStatus(d.QuaverID)
+	userOnlineStatus, err := b.GetUserSpecificOnlineStatus(d.QuaverID)
 	if err != nil {
 		return err
 	}
@@ -53,9 +54,10 @@ func (b *BaseHandler) ExecuteProfileCommand(_ context.Context, s *discordgo.Sess
 	e := utils.CreateEmbed()
 	kms := utils.GetKeymodeString(d.Is7K)
 	e.AddTitle(fmt.Sprintf(":flag_%s: %s (%s)", strings.ToLower(utils.GetCountryStr(data.User.Info.Country)), data.User.Info.Username, kms))
-	e.AddDescription(fmt.Sprintf("%s\n**[Steam](https://steamcommunity.com/profile/%s)** • **[Quaver Profile](https://quavergame.com/user/%d)**\n\nGlobal %s ranking: #**%s** (Country: **#%s**)\nPerformance rating (QR): **%0.2f**\nAccuracy: **%0.2f%%**\nJudgements: M:**%0.2f%%**, P:**%0.2f%%**, Gr:**%0.2f%%**, Go:**%0.2f%%**, O:**%0.2f%%**, M:**%0.2f%%**\n\nPlay count: **%d** (Failed: %d)\nTotal score: **%s**\nRanked score: **%s**",
+	e.AddDescription(fmt.Sprintf("%s\n**[Steam](https://steamcommunity.com/profile/%s)** • **[Quaver Profile](%s/user/%d)**\n\nGlobal %s ranking: #**%s** (Country: **#%s**)\nPerformance rating (QR): **%0.2f**\nAccuracy: **%0.2f%%**\nJudgements: M:**%0.2f%%**, P:**%0.2f%%**, Gr:**%0.2f%%**, Go:**%0.2f%%**, O:**%0.2f%%**, M:**%0.2f%%**\n\nPlay count: **%d** (Failed: %d)\nTotal score: **%s**\nRanked score: **%s**",
 		userOnlineStatus,
 		data.User.Info.SteamID,
+		bot_constants.QuaverMainSite,
 		data.User.Info.ID,
 		kms,
 		utils.AddCommas(int64(keymodeData.GlobalRank)),

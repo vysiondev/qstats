@@ -11,37 +11,37 @@ import (
 	"time"
 )
 
-func GetLetterGrade(letterGradeStr string) string {
+func (b *BaseHandler) GetLetterGrade(letterGradeStr string) string {
 	switch letterGradeStr {
 	case "F":
-		return bot_constants.GradeFEmoji
+		return b.Config.Emoji.Grade.F
 	case "D":
-		return bot_constants.GradeDEmoji
+		return b.Config.Emoji.Grade.D
 	case "C":
-		return bot_constants.GradeCEmoji
+		return b.Config.Emoji.Grade.C
 	case "B":
-		return bot_constants.GradeBEmoji
+		return b.Config.Emoji.Grade.B
 	case "A":
-		return bot_constants.GradeAEmoji
+		return b.Config.Emoji.Grade.A
 	case "S":
-		return bot_constants.GradeSEmoji
+		return b.Config.Emoji.Grade.S
 	case "SS":
-		return bot_constants.GradeSSEmoji
+		return b.Config.Emoji.Grade.SS
 	case "X":
-		return bot_constants.GradeXEmoji
+		return b.Config.Emoji.Grade.X
 	}
 	return "?"
 }
-func GetRankedStatus(status int) string {
+func (b *BaseHandler) GetRankedStatus(status int) string {
 	switch status {
 	case 0:
-		return bot_constants.RsNotSubmitted
+		return b.Config.Emoji.RankedStatus.NotSubmitted
 	case 1:
-		return bot_constants.RsUnranked
+		return b.Config.Emoji.RankedStatus.Unranked
 	case 2:
-		return bot_constants.RsRanked
+		return b.Config.Emoji.RankedStatus.Ranked
 	case 3:
-		return bot_constants.RsDan
+		return b.Config.Emoji.RankedStatus.Dan
 	}
 	return "?"
 }
@@ -54,7 +54,7 @@ func getScoreMapData(score quaverapi_structs.Score) (quaverapi_structs.QuaverMap
 	return mapData, nil
 }
 
-func calculateScoreField(score quaverapi_structs.Score, c chan<- MessageEmbedFieldChan, i int, mapData quaverapi_structs.QuaverMap, numberOverrideByPage int, hideNumbers bool, onExit func()) {
+func (b *BaseHandler) calculateScoreField(score quaverapi_structs.Score, c chan<- MessageEmbedFieldChan, i int, mapData quaverapi_structs.QuaverMap, numberOverrideByPage int, hideNumbers bool, onExit func()) {
 	go func() {
 		defer onExit()
 		maxCombo := (mapData.CountHitobjectLong * 2) + mapData.CountHitobjectNormal
@@ -64,18 +64,18 @@ func calculateScoreField(score quaverapi_structs.Score, c chan<- MessageEmbedFie
 		} else {
 			numStr = "#**" + strconv.Itoa(numberOverrideByPage+i) + "** • "
 		}
-		rankedStatus := GetRankedStatus(int(mapData.RankedStatus))
+		rankedStatus := b.GetRankedStatus(int(mapData.RankedStatus))
 		fullCombo := ""
 		if score.MaxCombo >= maxCombo && maxCombo != 0 {
-			fullCombo = " • " + bot_constants.FullCombo
+			fullCombo = " • " + b.Config.Emoji.FullCombo
 		}
 		diffRating := "?"
 		if mapData.DifficultyRating != 0.0 {
 			diffRating = fmt.Sprintf("%0.2f", mapData.DifficultyRating)
 		}
-		replayAvailable := bot_constants.ReplayEmoji + " ---"
+		replayAvailable := b.Config.Emoji.Download + " ---"
 		if score.PersonalBest {
-			replayAvailable = fmt.Sprintf("[%s Replay](https://quavergame.com/download/replay/%d)", bot_constants.ReplayEmoji, score.ID)
+			replayAvailable = fmt.Sprintf("[%s Replay](%s/download/replay/%d)", b.Config.Emoji.Download, bot_constants.QuaverMainSite, score.ID)
 		}
 		t, err := time.Parse(time.RFC3339, score.Time)
 		if err != nil {
@@ -84,13 +84,14 @@ func calculateScoreField(score quaverapi_structs.Score, c chan<- MessageEmbedFie
 		c <- MessageEmbedFieldChan{
 			Field: discordgo.MessageEmbedField{
 				Name: numStr + rankedStatus + fullCombo,
-				Value: fmt.Sprintf("**[%s [%s]](https://quavergame.com/mapset/map/%d)** [%s] +**%s**\n%s **%0.2f** QR • %0.2f%%\n%0.2f ratio • x%s / %s • [%s / %s / %s / %s / %s / %s]\nSet %s • %s",
-					mapData.Title,
-					mapData.DifficultyName,
+				Value: fmt.Sprintf("**[%s [%s]](%s/mapset/map/%d)** [%s] +**%s**\n%s **%0.2f** QR • %0.2f%%\n%0.2f ratio • x%s / %s • [%s / %s / %s / %s / %s / %s]\nSet %s • %s",
+					utils.RemoveFormattingCharacters(mapData.Title),
+					utils.RemoveFormattingCharacters(mapData.DifficultyName),
+					bot_constants.QuaverMainSite,
 					mapData.ID,
 					diffRating,
 					score.ModsString,
-					GetLetterGrade(score.Grade),
+					b.GetLetterGrade(score.Grade),
 					score.PerformanceRating,
 					score.Accuracy,
 					score.Ratio,
@@ -117,7 +118,7 @@ type MessageEmbedFieldChan struct {
 	Index int
 }
 
-func CreateScoreFields(scores []quaverapi_structs.Score, numberOverrideByPage int, hideNumbers bool) ([]discordgo.MessageEmbedField, error) {
+func (b *BaseHandler) CreateScoreFields(scores []quaverapi_structs.Score, numberOverrideByPage int, hideNumbers bool) ([]discordgo.MessageEmbedField, error) {
 	var mapDataArray []quaverapi_structs.QuaverMapResponse
 	fieldChan := make(chan MessageEmbedFieldChan, len(scores))
 
@@ -133,7 +134,7 @@ func CreateScoreFields(scores []quaverapi_structs.Score, numberOverrideByPage in
 	// CPU intensive, so we spawn goroutines.
 	for i, mapData := range mapDataArray {
 		wg.Add(1)
-		calculateScoreField(scores[i], fieldChan, i, mapData.Map, numberOverrideByPage, hideNumbers, func() { wg.Done() })
+		b.calculateScoreField(scores[i], fieldChan, i, mapData.Map, numberOverrideByPage, hideNumbers, func() { wg.Done() })
 	}
 
 	go func() {

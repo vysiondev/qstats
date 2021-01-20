@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"github.com/vysiondev/qstats-go/bot_constants"
 	"github.com/vysiondev/qstats-go/utils"
 	"strconv"
 )
@@ -18,7 +19,7 @@ func (b *BaseHandler) ExecuteTopCommand(ctx context.Context, s *discordgo.Sessio
 		return err
 	}
 
-	fields, err := CreateScoreFields(scores.Scores, rd.Page, false)
+	fields, err := b.CreateScoreFields(scores.Scores, rd.Page, false)
 
 	mapIDs := make([]int, len(scores.Scores))
 	for i, s := range scores.Scores {
@@ -40,7 +41,7 @@ func (b *BaseHandler) ExecuteTopCommand(ctx context.Context, s *discordgo.Sessio
 			user.User.Info.Username,
 		))
 	}
-	e.AddTitleURL("https://quavergame.com/user/" + strconv.Itoa(rd.QuaverID))
+	e.AddTitleURL(bot_constants.QuaverMainSite + "/user/" + strconv.Itoa(rd.QuaverID))
 	e.AddThumbnail(user.User.Info.AvatarURL)
 	for _, f := range fields {
 		e.AddField(f.Name, f.Value)

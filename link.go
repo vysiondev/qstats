@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"github.com/bwmarrin/discordgo"
 	"github.com/gocql/gocql"
-	"github.com/vysiondev/qstats-go/bot_constants"
 	"github.com/vysiondev/qstats-go/err"
 	"github.com/vysiondev/qstats-go/utils"
 	"strings"
@@ -28,7 +27,7 @@ func (b *BaseHandler) ExecuteLinkCommand(_ context.Context, s *discordgo.Session
 		return dbErr
 	}
 
-	_, e := s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("%s Linked to Quaver user **%s**. Your profile (accessed from \"profile\" command) will now show **%s** stats by default.", bot_constants.OkEmoji, u.Users[0].Username, utils.GetKeymodeString(d.Is7K)))
+	_, e := s.ChannelMessageSend(m.ChannelID, fmt.Sprintf("%s Linked to Quaver user **%s**. Your profile (accessed from \"profile\" command) will now show **%s** stats by default.", b.Config.Emoji.Success, u.Users[0].Username, utils.GetKeymodeString(d.Is7K)))
 	if e != nil {
 		return e
 	}

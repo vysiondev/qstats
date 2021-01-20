@@ -136,3 +136,16 @@ func FmtDuration(d time.Duration) string {
 	s := d / time.Second
 	return fmt.Sprintf("%02d:%02d", m, s)
 }
+
+// Will remove characters that Discord will automatically format and replace them with escapes.
+func RemoveFormattingCharacters(s string) string {
+	s = strings.ReplaceAll(s, "*", "\\*")
+	s = strings.ReplaceAll(s, "~", "\\~")
+	s = strings.ReplaceAll(s, "[", "\\[")
+	s = strings.ReplaceAll(s, "_", "\\_")
+	s = strings.ReplaceAll(s, "]", "\\]")
+	s = strings.ReplaceAll(s, ")", "\\)")
+	s = strings.ReplaceAll(s, "(", "\\(")
+	s = strings.ReplaceAll(s, ">", "\\>")
+	return s
+}

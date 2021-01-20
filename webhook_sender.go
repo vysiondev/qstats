@@ -25,7 +25,7 @@ func (b *BaseHandler) SendMessageToWebhook(m string) {
 		}
 		closeErr := resp.Body.Close()
 		if closeErr != nil {
-			fmt.Println("Cound not close response body: " + closeErr.Error())
+			fmt.Println("Could not close response body: " + closeErr.Error())
 		}
 	}
 }

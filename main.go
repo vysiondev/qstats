@@ -43,6 +43,8 @@ func main() {
 
 	// Set undefined variables
 	viper.SetDefault("prometheus.port", "8080")
+	viper.SetDefault("links.website", "https://qstats.vys.moe")
+	viper.SetDefault("links.github", "https://github.com/vysiondev/qstats")
 	viper.SetDefault("links.supportserver", "https://discord.gg/F7RBKh2")
 	viper.SetDefault("bot.prefix", "q;")
 	viper.SetDefault("bot.cooldown", 4000)

@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"github.com/vysiondev/qstats-go/bot_constants"
 	"github.com/vysiondev/qstats-go/utils"
 	"strconv"
 	"strings"
@@ -58,7 +59,7 @@ func (b *BaseHandler) ExecuteLeaderboardCommand(_ context.Context, s *discordgo.
 	embed.AddTitle(fmt.Sprintf("%s %s leaderboards (#%d - #%d)", lbTypeStr, utils.GetKeymodeString(rd.Is7K), calcPlayerIndex(rd.Page)+1, calcPlayerIndex(rd.Page)+25))
 	embed.AddDescription(lbStr)
 	embed.AddFooter("+ indicates QR advantage")
-	embed.AddTitleURL(fmt.Sprintf("https://quavergame.com/leaderboard/?mode=%s&page=%s&country=%s", utils.GetKeymodeIntAsStr(rd.Is7K), strconv.Itoa(rd.Page-1), country))
+	embed.AddTitleURL(fmt.Sprintf(bot_constants.QuaverMainSite+"/leaderboard/?mode=%s&page=%s&country=%s", utils.GetKeymodeIntAsStr(rd.Is7K), strconv.Itoa(rd.Page-1), country))
 
 	_, e := s.ChannelMessageSendEmbed(m.ChannelID, embed.MessageEmbed)
 	if e != nil {

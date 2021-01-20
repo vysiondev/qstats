@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"github.com/bwmarrin/discordgo"
+	"github.com/vysiondev/qstats-go/bot_constants"
 	"github.com/vysiondev/qstats-go/quaverapi_structs"
 	"github.com/vysiondev/qstats-go/utils"
 	"strconv"
@@ -21,7 +22,7 @@ func (b *BaseHandler) ExecuteCompareCommand(ctx context.Context, s *discordgo.Se
 	}
 
 	scoreArray := []quaverapi_structs.Score{score.Score}
-	embedFields, fieldErr := CreateScoreFields(scoreArray, rd.Page, true)
+	embedFields, fieldErr := b.CreateScoreFields(scoreArray, rd.Page, true)
 	if fieldErr != nil {
 		return err
 	}
@@ -33,7 +34,7 @@ func (b *BaseHandler) ExecuteCompareCommand(ctx context.Context, s *discordgo.Se
 		utils.GetKeymodeString(rd.Is7K),
 		score.BestScoreIndex+1,
 	))
-	e.AddTitleURL("https://quavergame.com/user/" + strconv.Itoa(rd.QuaverID))
+	e.AddTitleURL(bot_constants.QuaverMainSite + "/user/" + strconv.Itoa(rd.QuaverID))
 	e.AddField(embedFields[0].Name, embedFields[0].Value)
 	e.AddThumbnail(score.UserData.User.Info.AvatarURL)
 	_, sendErr := s.ChannelMessageSendEmbed(m.ChannelID, e.MessageEmbed)
